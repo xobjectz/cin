@@ -99,7 +99,6 @@ def popen2(txt):
     proc.wait()
 
 
-popen("bin/clean -f")
 popen('python3 setup.py sdist')
 popen("python3 -mvirtualenv --system-site-packages env")
 popen("env/bin/pip3 install %s -f dist --upgrade" % NAME)
