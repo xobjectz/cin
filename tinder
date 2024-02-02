@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # This file is placed in the Public Domain.
 #
-# pylint: disable=R,C,W0718,W0611,W0613,E0102,E0401,E0611,W0201,W0702,W0603
+# pylint: disable=R,C,W0603,E1101
 
 
 "created clients"
@@ -21,9 +21,11 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from sbn import Client, Command, Default, Error, Event, Object
-from sbn import Storage, modules, scan
-from sbn import keys, laps, launch, parse_command, spl
+from objx import Broker, Client, Command, Default, Error, Event, Handler, Object
+from objx import Storage, keys, laps, launch, parse_cmd, scan, spl
+
+
+import mods
 
 
 STARTTIME = time.time()
@@ -31,7 +33,7 @@ STARTTIME = time.time()
 
 Cfg = Default()
 Cfg.debug = True
-Cfg.mod =  ",".join(modules.__dir__())
+Cfg.mod =  ",".join(mods.__dir__())
 Cfg.name = "tinder"
 Cfg.silent = False
 Cfg.skip = ["debug",]
@@ -43,7 +45,6 @@ Storage.wd = Cfg.wd
 
 
 paylock = _thread.allocate_lock()
-
 events = []
 
 
@@ -65,6 +66,9 @@ param.ver = [""]
 
 
 class CLI(Client):
+
+    def announce(self, txt):
+        pass
 
     def say(self, channel, txt):
         if "v" not in Cfg.opts:
@@ -137,7 +141,7 @@ def main() -> None:
     global nrcommand
     global percall
     Error.output = cprint
-    for mod in scan(modules, Cfg.mod):
+    for mod in scan(mods, Cfg.mod):
         mod.DEBUG = True
     nrs = Cfg.index or 1
     nrcommand = len(Command.cmds) or 1
@@ -150,15 +154,15 @@ def main() -> None:
     lap = laps(endtime - STARTTIME)
     percall = (endtime - STARTTIME)/(nrs * nrcommand)
 
-
 if __name__ == "__main__":
     if os.path.exists(Storage.wd):
         shutil.rmtree(Storage.wd)
     Storage.skel()
-    parse_command(Cfg, " ".join(sys.argv[1:]))
+    parse_cmd(Cfg, " ".join(sys.argv[1:]))
     if "p" in Cfg.opts:
         profile.runctx(main.__code__, globals(), locals())
     else:
         wrap(main)
-    Error.show()
+    if "v" in Cfg.opts:
+        Error.show()
     print(f"{lap} {nrs} {nrcommand} {percall}")
