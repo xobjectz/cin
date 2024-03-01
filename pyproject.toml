@@ -1,0 +1,65 @@
+[build-system]
+requires = [
+    "setuptools>=43.0.0",
+    "wheel"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cin"
+description = "central intelligence name"
+version = "103"
+authors = [
+    {name = "Bart Thate",email = "bthate@dds.nl"},
+]
+readme = "README.rst"
+license = {text="Public Domain"}
+classifiers = [ 
+    'Development Status :: 3 - Alpha',
+    'License :: Public Domain',
+    'Operating System :: Unix',
+    'Programming Language :: Python',
+    'Topic :: Utilities'
+]
+
+[project.urls]
+"home" = "https://pypi.org/project/cin"
+"bugs" = "https://github.com/xobjectz/cin/issues"
+"source" = "https://github.com/xobjectz/cin"
+
+
+[tool.setuptools]
+script-files = [
+    'bin/cin',
+    'bin/cind'
+]
+packages = [
+    "cin",
+]
+zip-safe=true
+
+
+[tool.setuptools.data-files]
+"share/doc/cin" = [
+    "README.rst"
+]
+"mods" = [
+    'mods/cmd.py',
+    'mods/err.py',
+    'mods/flt.py',
+    'mods/fnd.py',
+    'mods/irc.py',
+    'mods/log.py',
+    'mods/mbx.py',
+    'mods/mdl.py',
+    'mods/mod.py',
+    'mods/req.py',
+    'mods/rss.py',
+    'mods/rst.py',
+    'mods/slg.py',
+    'mods/tdo.py',
+    'mods/thr.py',
+    'mods/tmr.py',
+    'mods/udp.py',
+    'mods/wsd.py'
+]

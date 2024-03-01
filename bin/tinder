@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # This file is placed in the Public Domain.
 #
-# pylint: disable=R,C,W0603,E1101
+# pylint: disable=R,C,W0718,W0611,W0613,E0102,E0401,E0611,W0201,W0702,W0603
 
 
 "created clients"
@@ -21,11 +21,9 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from objx import Broker, Client, Command, Default, Error, Event, Handler, Object
-from objx import Storage, keys, laps, launch, parse_cmd, scan, spl
-
-
-import mods
+from botl.objects import Default, Object, edit, fmt, keys, spl, update
+from botl.runtime import Broker, Client, Errors, Event, debug, launch, parse_cmd, scan
+from botl.persist import Workdir, laps, last, sync
 
 
 STARTTIME = time.time()
@@ -33,19 +31,28 @@ STARTTIME = time.time()
 
 Cfg = Default()
 Cfg.debug = True
-Cfg.mod =  ",".join(mods.__dir__())
 Cfg.name = "tinder"
 Cfg.silent = False
 Cfg.skip = ["debug",]
-Cfg.version = "60"
+Cfg.version = "110"
 Cfg.wd = ".test"
-
-
-Storage.wd = Cfg.wd
+Workdir.wd = Cfg.wd
 
 
 paylock = _thread.allocate_lock()
+
+
+if os.path.exists("mods"):
+    import mods
+else:
+    mods = None
+
+
 events = []
+lap = 1
+nrs = 1
+nrcommand = 1
+percall = 1
 
 
 param = Object()
@@ -67,9 +74,6 @@ param.ver = [""]
 
 class CLI(Client):
 
-    def announce(self, txt):
-        pass
-
     def say(self, channel, txt):
         if "v" not in Cfg.opts:
             return
@@ -81,8 +85,6 @@ def consume(evts):
     res = []
     for evt in evts:
         res.append(evt.wait())
-        if "v" in Cfg.opts and not evt.result:
-            print(f"no result for {evt.cmd}")
         fixed.append(evt)
     for fff in fixed:
         try:
@@ -97,8 +99,8 @@ def cprint(txt):
     sys.stdout.flush()
 
 
-def payload(clt) -> None:
-    cmds = list(keys(Command.cmds))
+def payload(clt):
+    cmds = list(keys(Client.cmds))
     random.shuffle(cmds)
     with paylock:
         nmr = 0
@@ -114,7 +116,7 @@ def payload(clt) -> None:
         return nmr
 
 
-def wrap(func) -> None:
+def wrap(func):
     old2 = None
     try:
         old2 = termios.tcgetattr(sys.stdin.fileno())
@@ -129,23 +131,20 @@ def wrap(func) -> None:
             termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old2)
 
 
-lap = 1
-nrs = 1
-nrcommand = 1
-percall = 1
-
-
-def main() -> None:
+def main():
     global lap
     global nrs
     global nrcommand
     global percall
-    Error.output = cprint
-    for mod in scan(mods, Cfg.mod):
-        mod.DEBUG = True
+    Errors.output = cprint
+    if mods:
+        mds = ",".join(mods.__dir__())
+        for mod in scan(mods, mds):
+            mod.DEBUG = True
     nrs = Cfg.index or 1
-    nrcommand = len(Command.cmds) or 1
+    nrcommand = len(Client.cmds) or 1
     cli = CLI()
+    cli.raw = print
     cli.start()
     for _nr in range(nrs):
         launch(payload, cli)
@@ -154,15 +153,18 @@ def main() -> None:
     lap = laps(endtime - STARTTIME)
     percall = (endtime - STARTTIME)/(nrs * nrcommand)
 
+
 if __name__ == "__main__":
-    if os.path.exists(Storage.wd):
-        shutil.rmtree(Storage.wd)
-    Storage.skel()
+    if os.path.exists(Workdir.wd):
+        shutil.rmtree(Workdir.wd)
+    Workdir.skel()
     parse_cmd(Cfg, " ".join(sys.argv[1:]))
+    dte = time.ctime(time.time()).replace("  ", " ")
+    debug(f"{Cfg.name.upper()} {Cfg.opts.upper()} started {dte}")
+    Cfg.mod =  ",".join(mods.__dir__())
     if "p" in Cfg.opts:
         profile.runctx(main.__code__, globals(), locals())
     else:
         wrap(main)
-    if "v" in Cfg.opts:
-        Error.show()
+    Errors.show()
     print(f"{lap} {nrs} {nrcommand} {percall}")
