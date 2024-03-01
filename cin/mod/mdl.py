@@ -10,9 +10,9 @@ import datetime
 import time
 
 
-from .obj import Object, construct, keys
-from .pst import laps
-from .run import Broker, Event, Repeater, launch
+from obj import Object, construct, keys
+from pst import laps
+from run import Broker, Event, Repeater, launch
 
 
 def __dir__():

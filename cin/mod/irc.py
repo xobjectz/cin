@@ -17,9 +17,9 @@ import time
 import _thread
 
 
-from .obj import Default, Object, edit, fmt, keys
-from .run import Broker, Client, Errors, Event, debug, launch
-from .pst import last, sync
+from obj import Default, Object, edit, fmt, keys
+from run import Broker, Client, Errors, Event, debug, launch
+from pst import last, sync
 
 
 NAME    = "cin"

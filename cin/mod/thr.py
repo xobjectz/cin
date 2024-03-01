@@ -10,8 +10,8 @@ import threading
 import time
 
 
-from .obj import Object, update
-from .pst import laps
+from obj import Object, update
+from pst import laps
 
 
 STARTTIME = time.time()

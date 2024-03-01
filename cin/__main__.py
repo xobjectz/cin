@@ -36,16 +36,13 @@ import termios
 import time
 
 
-sys.path.insert(0, os.getcwd())
+from obj import Default
+from pst import Workdir
+from run import Client, Errors, Event, listmods
+from run import cmnd, debug, forever, init, parse_cmd, scan
 
 
-from cin.obj import Default
-from cin.pst import Workdir
-from cin.run import Client, Errors, Event, listmods
-from cin.run import cmnd, debug, forever, init, parse_cmd, scan
-
-
-import cin
+from cin import mod as mods
 
 
 Cfg         = Default()
@@ -142,24 +139,24 @@ def main():
         print(__doc__)
         return
     if "d" in Cfg.opts:
-        Cfg.mod = ",".join(listmods(Cfg.modpath))
+        Cfg.mod = ",".join(mods.__dir__())
         Cfg.user = getpass.getuser()
         daemon(Cfg.pidfile, "v" in Cfg.opts)
         privileges(Cfg.user)
-        scan(cin, Cfg.mod, Cfg.sets.dis)
-        init(cin, Cfg.mod, Cfg.sets.dis)
+        scan(mods, Cfg.mod, Cfg.sets.dis)
+        init(mods, Cfg.mod, Cfg.sets.dis)
         forever()
         return
     if "c" in Cfg.opts:
-        scan(cin, Cfg.mod, Cfg.sets.dis)
-        init(cin, Cfg.mod, Cfg.sets.dis)
+        scan(mods, Cfg.mod, Cfg.sets.dis)
+        init(mods, Cfg.mod, Cfg.sets.dis)
         csl = Console()
         csl.start()
         forever()
         return
     if Cfg.otxt:
-        Cfg.mod = ",".join(listmods(Cfg.modpath))
-        scan(cin, Cfg.mod, Cfg.sets.dis)
+        Cfg.mod = ",".join(mods.__dir__())
+        scan(mods, Cfg.mod, Cfg.sets.dis)
         return cmnd(Cfg.otxt, print)
 
 

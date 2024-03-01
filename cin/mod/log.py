@@ -9,8 +9,8 @@
 import time
 
 
-from .obj  import Object
-from .pst import find, fntime, laps, sync
+from obj  import Object
+from pst import find, fntime, laps, sync
 
 
 class Log(Object):

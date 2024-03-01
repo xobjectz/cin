@@ -11,8 +11,8 @@ import os
 import time
 
 
-from .obj import Object, fmt, update
-from .pst import find, fntime, laps, sync
+from obj import Object, fmt, update
+from pst import find, fntime, laps, sync
 
 
 MONTH = {

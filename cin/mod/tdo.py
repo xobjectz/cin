@@ -9,8 +9,8 @@
 import time
 
 
-from .obj import Object
-from .pst import fntime, find, laps, sync
+from obj import Object
+from pst import fntime, find, laps, sync
 
 
 class NoDate(Exception):

@@ -14,9 +14,9 @@ import time
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 
-from .obj import Default, Object
-from .pst import Persist, Workdir
-from .run import Errors, debug, launch
+from obj import Default, Object
+from pst import Persist, Workdir
+from run import Errors, debug, launch
 
 
 def init():

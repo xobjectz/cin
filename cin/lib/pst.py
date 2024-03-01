@@ -14,7 +14,7 @@ import time
 import _thread
 
 
-from .obj import Default, Object, dump, fqn, load, search, update
+from obj import Default, Object, dump, fqn, load, search, update
 
 
 lock = _thread.allocate_lock()

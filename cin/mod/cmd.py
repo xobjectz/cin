@@ -6,7 +6,7 @@
 "list of commands"
 
 
-from .run import Client
+from run import Client
 
 
 def cmd(event):

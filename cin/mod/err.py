@@ -6,7 +6,7 @@
 "status of bots"
 
 
-from .run import Broker, Errors
+from run import Broker, Errors
 
 
 def err(event):

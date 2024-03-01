@@ -17,8 +17,8 @@ import types
 import _thread
 
 
-from .obj import Default, Object, keys, spl, values
-from .pst import Persist
+from obj import Default, Object, keys, spl, values
+from pst import Persist
 
 
 rpr = object.__repr__

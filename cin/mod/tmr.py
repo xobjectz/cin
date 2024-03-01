@@ -11,9 +11,9 @@ import re
 import time as ttime
 
 
-from .obj import update
-from .pst import find, laps, sync
-from .run import Broker, Event, Timer, launch
+from obj import update
+from pst import find, laps, sync
+from run import Broker, Event, Timer, launch
 
 
 def init():
