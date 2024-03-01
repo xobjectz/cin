@@ -45,6 +45,9 @@ from cin.run import Client, Errors, Event, listmods
 from cin.run import cmnd, debug, forever, init, parse_cmd, scan
 
 
+import cin
+
+
 Cfg         = Default()
 Cfg.mod     = "cmd,mod"
 Cfg.name    = "cin"
@@ -124,12 +127,6 @@ def wrap(func):
     finally:
         if old2:
             termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old2)
-
-
-if os.path.exists(Cfg.modpath):
-    import mods
-else:
-    mods = None
 
 
 def main():
