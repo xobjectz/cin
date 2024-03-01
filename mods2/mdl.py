@@ -10,9 +10,9 @@ import datetime
 import time
 
 
-from cin.runtime import Broker, Event, Repeater, launch
-from cin.objects import Object, construct, keys
-from cin.persist import laps
+from cin.run import Broker, Event, Repeater, launch
+from cin.obj import Object, construct, keys
+from cin.pst import laps
 
 
 def __dir__():

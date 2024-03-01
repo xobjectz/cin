@@ -18,9 +18,9 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus, urlencode
 
 
-from cin.objects import Default, Object, fmt, update
-from cin.persist import find, fntime, laps, last, sync
-from cin.runtime import Broker, Repeater, launch
+from .obj import Default, Object, fmt, update
+from .pst import find, fntime, laps, last, sync
+from .run import Broker, Repeater, launch
 
 
 def init():

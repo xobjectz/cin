@@ -13,8 +13,8 @@ import threading
 import time
 
 
-from cin.objects import Object
-from cin.runtime import Broker, launch
+from .obj import Object
+from .run import Broker, launch
 
 
 def init():

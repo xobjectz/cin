@@ -11,8 +11,8 @@ import os
 import time
 
 
-from cin.objects import Object, fmt, update
-from cin.persist import find, fntime, laps, sync
+from cin.obj import Object, fmt, update
+from cin.pst import find, fntime, laps, sync
 
 
 MONTH = {

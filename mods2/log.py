@@ -9,8 +9,8 @@
 import time
 
 
-from cin.objects  import Object
-from cin.persist import find, fntime, laps, sync
+from cin.obj  import Object
+from cin.pst import find, fntime, laps, sync
 
 
 class Log(Object):

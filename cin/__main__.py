@@ -5,12 +5,12 @@
 # ruff: noqa: E402
 
 
-"""BOTL
+"""CIN - central intelligence name
 
 SYNOPSIS
 
-    botl <cmd> [key=val] [key==val]
-    botl [-a] [-c] [-d] [-h] [-v]
+    cin <cmd> [key=val] [key==val]
+    cin [-a] [-c] [-d] [-h] [-v]
 
 COMMANDS
 
@@ -25,6 +25,7 @@ OPTIONS
     -h     display help
     -v     use verbose
 """
+
 
 import getpass
 import os
@@ -42,9 +43,6 @@ from cin.obj import Default
 from cin.pst import Workdir
 from cin.run import Client, Errors, Event, listmods
 from cin.run import cmnd, debug, forever, init, parse_cmd, scan
-
-
-import cin as mods
 
 
 Cfg         = Default()
@@ -128,6 +126,12 @@ def wrap(func):
             termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old2)
 
 
+if os.path.exists(Cfg.modpath):
+    import mods
+else:
+    mods = None
+
+
 def main():
     Errors.enable(print)
     Workdir.skel()
@@ -145,20 +149,20 @@ def main():
         Cfg.user = getpass.getuser()
         daemon(Cfg.pidfile, "v" in Cfg.opts)
         privileges(Cfg.user)
-        scan(mods, Cfg.mod, Cfg.sets.dis)
-        init(mods, Cfg.mod, Cfg.sets.dis)
+        scan(cin, Cfg.mod, Cfg.sets.dis)
+        init(cin, Cfg.mod, Cfg.sets.dis)
         forever()
         return
     if "c" in Cfg.opts:
-        scan(mods, Cfg.mod, Cfg.sets.dis)
-        init(mods, Cfg.mod, Cfg.sets.dis)
+        scan(cin, Cfg.mod, Cfg.sets.dis)
+        init(cin, Cfg.mod, Cfg.sets.dis)
         csl = Console()
         csl.start()
         forever()
         return
     if Cfg.otxt:
         Cfg.mod = ",".join(listmods(Cfg.modpath))
-        scan(mods, Cfg.mod, Cfg.sets.dis)
+        scan(cin, Cfg.mod, Cfg.sets.dis)
         return cmnd(Cfg.otxt, print)
 
 

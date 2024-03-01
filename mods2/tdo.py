@@ -9,8 +9,8 @@
 import time
 
 
-from cin.objects import Object
-from cin.persist import fntime, find, laps, sync
+from cin.obj import Object
+from cin.pst import fntime, find, laps, sync
 
 
 class NoDate(Exception):
